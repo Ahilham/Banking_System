@@ -21,6 +21,6 @@ namespace Assignment2.Models
         [ForeignKey("BankAccount")]
         public int RelatedAccount {  get; set; }
 
-        public string Description { get; set; }
+        public string? Description { get; set; }
     }
 }

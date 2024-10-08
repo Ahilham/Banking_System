@@ -30,8 +30,8 @@ namespace Assignment2.Controllers
             }
         }
 
-        [HttpGet("Transfer/{sender}/{recipient}/{amount}")]
-        public IActionResult Transfer(int sender, int recipient, decimal amount)
+        [HttpGet("Transfer/{sender}/{recipient}/{amount}/{description}")]
+        public IActionResult Transfer(int sender, int recipient, decimal amount, string description)
         {
             try
             {
@@ -42,7 +42,7 @@ namespace Assignment2.Controllers
                 }
 
                 // Attempt the transfer using the DBmanager.Transfer method
-                bool success = DBmanager.Transfer(sender, recipient, amount);
+                bool success = DBmanager.Transfer(sender, recipient, amount, description);
 
                 if (success)
                 {

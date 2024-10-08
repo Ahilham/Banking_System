@@ -457,7 +457,7 @@ namespace Assignment2.Data
         }
 
 
-        public static bool Transfer(int sender, int recipient, decimal amount)
+        public static bool Transfer(int sender, int recipient, decimal amount, string description)
         {
             try
             {
@@ -577,11 +577,13 @@ namespace Assignment2.Data
                             command.Parameters.Clear();
 
                             // Log the sender's transaction (withdrawal)
-                            command.CommandText = "INSERT INTO Transactions (AccountNumber, TransactionType, Amount, RelatedAccount) VALUES (@SenderAccount, @TransactionType, @Amount, @RelatedAccount);";
+                            command.CommandText = "INSERT INTO Transactions (AccountNumber, TransactionType, Amount, RelatedAccount, Description) VALUES (@SenderAccount, @TransactionType, @Amount, @RelatedAccount, @Description);";
                             command.Parameters.AddWithValue("@SenderAccount", sender);
-                            command.Parameters.AddWithValue("@TransactionType", "Withdrawal");
+                            command.Parameters.AddWithValue("@TransactionType", "Transfer");
                             command.Parameters.AddWithValue("@Amount", Math.Round(amount, 2));
                             command.Parameters.AddWithValue("@RelatedAccount", recipient);
+                            command.Parameters.AddWithValue("@Description", description);
+
 
                             int rowsInserted = command.ExecuteNonQuery();
 
@@ -596,11 +598,12 @@ namespace Assignment2.Data
                             command.Parameters.Clear();
 
                             // Log the recipient's transaction (deposit)
-                            command.CommandText = "INSERT INTO Transactions (AccountNumber, TransactionType, Amount, RelatedAccount) VALUES (@RecipientAccount, @TransactionType, @Amount, @RelatedAccount);";
+                            command.CommandText = "INSERT INTO Transactions (AccountNumber, TransactionType, Amount, RelatedAccount, Description) VALUES (@RecipientAccount, @TransactionType, @Amount, @RelatedAccount, @Description);";
                             command.Parameters.AddWithValue("@RecipientAccount", recipient);
-                            command.Parameters.AddWithValue("@TransactionType", "Deposit");
+                            command.Parameters.AddWithValue("@TransactionType", "Receive");
                             command.Parameters.AddWithValue("@Amount", Math.Round(amount, 2));
                             command.Parameters.AddWithValue("@RelatedAccount", sender);
+                            command.Parameters.AddWithValue("@Description", description);
 
                             rowsInserted = command.ExecuteNonQuery();
 
@@ -670,7 +673,7 @@ namespace Assignment2.Data
                         command.Parameters.AddWithValue("@Picture", userAccount.Picture);
                         command.Parameters.AddWithValue("@password", userAccount.Password);
                         command.Parameters.AddWithValue("@Role", userAccount.Role);
-
+                               
 
                         int rowsinserted = command.ExecuteNonQuery();
                         connection.Close();
